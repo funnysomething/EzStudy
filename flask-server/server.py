@@ -1,7 +1,6 @@
 from flask import Flask, request
 from flask_cors import CORS, cross_origin
 from pptx import Presentation
-from io import BytesIO
 from utils.parse import extract_text_from_pptx 
 from utils.gptsummarizer import generate_summary
 
@@ -17,21 +16,21 @@ def home():
 
 
 @app.route("/api/upload", methods = ['POST'])
+@cross_origin()
 def upload_file():
     print("Posted file: {}".format(request.files['file']))
-    file = request.files['file']
+    # file = request.files['file']
 
-    # Parse presentation file
-    prs = Presentation(file)
+    # # Parse presentation file
+    # prs = Presentation(file)
     
-    # Extract text from presentation
-    text = extract_text_from_pptx(prs)
-    print(text)
-
-    return ""
-
+    # # Extract text from presentation
+    # text = extract_text_from_pptx(prs)
+    
+    # # Generate summary
     # response = generate_summary(text)
-
+    
+    # # Return response
     # return response
 
 if __name__ == '__main__':

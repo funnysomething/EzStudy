@@ -1,14 +1,19 @@
 from openai import OpenAI
 import configparser
+import os
 
-config = configparser.ConfigParser()
-config.read('config.ini')
-api_key = config['Credentials']['OPENAI_API_KEY']
+config = configparser.RawConfigParser()
+thisfolder = os.path.dirname(os.path.abspath(__file__))
+initfile = os.path.join(thisfolder, 'config.ini')
 
+res = config.read(initfile)
 
-async def generate_summary(messages):
+api_key = config.get('Key', 'OPENAI_API_KEY')
+
+async def generate_summary(text):
     global api_key
     aiClient = OpenAI(api_key=api_key)
+    messages = formatText(text)
     try:
         response = aiClient.chat.completions.create(
             model="gpt-3.5-turbo",
@@ -17,3 +22,12 @@ async def generate_summary(messages):
         return response.choices[0].message.content
     except Exception as e:
         print(f"Error generating response: {e}")
+
+
+def formatFile(text):
+    return {"role": "user", "content": text}
+
+def formatText(text):
+    messages = [{"role": "system", "content": "You are an assistant who summarizes and details the important bits of different files. You will be given text in different formats"}]
+    messages.append(map(formatFile, text))
+
