@@ -23,14 +23,19 @@
   height: 25px; /* Adjust as needed */
 }
 
-.Main-text {
+#Main-text {
   color:black;
+  position: absolute;
+}
+
+#Main-text :hover {
+
 }
 
 h1 {
-  position: absolute;
   justify-content: center;
 }
+
 
 .text-output-section {
     background-color: black;
@@ -43,5 +48,4 @@ h1 {
     /*max-height: calc(100vh - 40px); /* Adjust based on your preference */
     overflow-y: auto;
     min-height: 100vh;
-  
 }

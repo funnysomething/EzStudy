@@ -78,12 +78,12 @@ function App() {
       setShowTypingText(false);
       // Simulate typing effect
       const textToType = res.data;
-      let currentIndex = 0;
+      let currentIndex = 4;
       const typingInterval = 10; // Adjust typing speed
       const typingTimer = setInterval(() => {
           setTypedText(prevTypedText => prevTypedText + textToType[currentIndex]);
           currentIndex++;
-          if (currentIndex === textToType.length) {
+          if (currentIndex === textToType.length-9) {
             clearInterval(typingTimer);
           }
         }, typingInterval);
