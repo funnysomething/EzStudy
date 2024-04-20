@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import './App.css';
+import parse from 'html-react-parser';
 
 function App() {
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
@@ -104,10 +105,7 @@ function App() {
       {showText && (
         <div className="text-output-section" id="text-output-section">
           <h2>Text Output</h2>
-          <p>adhfkjdhewfuilhfejwaklfheawulhkfjaewhfuldashfjklaewhulekfhajklhdjklasfhluaekjhdefjk</p>
-          <p>adhfkjdhewfuilhfejwaklfheawulhkfjaewhfuldashfjklaewhulekfhajklhdjklasfhluaekjhdefjk</p>
-          <p>adhfkjdhewfuilhfejwaklfheawulhkfjaewhfuldashfjklaewhulekfhajklhdjklasfhluaekjhdefjk</p>
-
+          <div>{parse(text)}</div>
           <ul>
             {droppedFiles.map((file, index) => (
               <li key={index}>
