@@ -12,17 +12,18 @@ function App() {
   };
 
   const calculateDistance = (pointX, pointY) => {
-    const dx = mousePosition.x - pointX;
-    const dy = mousePosition.y - pointY;
+    const dx = mousePosition.x - pointX + 400;
+    const dy = mousePosition.y - pointY + 450;
     return Math.sqrt(dx * dx + dy * dy);
-  };
+  }; 
 
   const getBackgroundColor = (x, y) => {
     const distance = calculateDistance(x, y);
-    const threshold = 100;
+    const threshold = 1700;
+    var red = 0; var green = 247; var blue = 191; 
     if (distance < threshold) {
       const opacity = 1 - distance / threshold;
-      return `rgba(255, 0, 0, ${opacity})`;
+      return `rgba(50, 168, 139, ${opacity})`;
     }
     return 'transparent';
   };
@@ -31,10 +32,10 @@ function App() {
     function handleResize() {
       const screenWidth = window.innerWidth;
       const screenHeight = window.innerHeight;
-      const cellSize = 50; // Adjust cell size as needed
+      const cellSize = 24; // Adjust cell size as needed
       const margin = 10; // Adjust margin size as needed
-      const availableWidth = screenWidth - margin * 2; // Consider margins
-      const availableHeight = screenHeight - margin * 2; // Consider margins
+      const availableWidth = screenWidth// - margin * 2; // Consider margins
+      const availableHeight = screenHeight// - margin * 2; // Consider margins
       const maxColumns = Math.floor(availableWidth / cellSize);
       const maxRows = Math.floor(availableHeight / cellSize);
       setGridSize({ rows: maxRows, columns: maxColumns });
@@ -76,7 +77,7 @@ function App() {
 
   return (
     <div className="App" onMouseMove={handleMouseMove} onDrop={handleDrop} onDragOver={handleDragOver}>
-      <h1>File Drop Example</h1>
+      <h1>Drag and Drop Your File!</h1>
       <div className="background">
         {Array.from({ length: gridSize.rows }, (_, rowIndex) => (
           <div key={rowIndex} className="row">
@@ -90,19 +91,6 @@ function App() {
           </div>
         ))}
       </div>
-      {/*<div>
-        <p>Drop in your file!</p>
-        <p>Dropped Files:</p>
-        <ul>
-          {droppedFiles.map((file, index) => (
-            <li key={index}>
-              <strong>Name:</strong> {file.name}, <strong>Size:</strong> {file.size} bytes, <strong>Type:</strong> {file.type}
-              <br />
-              <strong>Content:</strong> <pre>{file.content}</pre>
-            </li>
-          ))}
-        </ul>
-        </div>*/}
     </div>
   );
 }

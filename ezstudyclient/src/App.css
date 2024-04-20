@@ -4,6 +4,8 @@
   justify-content: center;
   align-items: center;
   height: 100vh;
+  background-color: black;
+  overflow: hidden;
 }
 
 .background {
@@ -17,10 +19,11 @@
 .cell {
   width: 25px; /* Adjust as needed */
   height: 25px; /* Adjust as needed */
-  /*border: 1px solid black; /* Add border for visibility */
+  /*border: 1px solid white; /* Add border for visibility */
 }
 
 h1 {
   position: absolute;
+  color: white;
 
 }
