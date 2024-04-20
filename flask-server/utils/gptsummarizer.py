@@ -29,5 +29,7 @@ def formatFile(text):
 
 def formatText(text):
     messages = [{"role": "system", "content": "You are an assistant who summarizes and details the important bits of different files. You will be given text in different formats"}]
-    messages.append(map(formatFile, text))
+    messages.append(formatFile(text))
+    print(messages)
+    return messages
 
