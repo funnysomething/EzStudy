@@ -3,6 +3,7 @@ from flask_cors import CORS, cross_origin
 from pptx import Presentation
 from io import BytesIO
 from utils.parse import extract_text_from_pptx 
+from utils.gptsummarizer import generate_summary
 
 app = Flask(__name__)
 
@@ -17,18 +18,20 @@ def home():
 
 @app.route("/api/upload", methods = ['POST'])
 def upload_file():
-    # Get uploaded file
-    uploaded_file = request.json
+    if 'files' not in request.files:
+        return 'No files uploaded', 400
+    
+    uploaded_files = request.files.getlist('files')
 
-    print(uploaded_file)
-    # #Load the PPTX presentation
-    # prs = Presentation(uploaded_file)
+    # Load the PPTX presentation
+    prs = Presentation(uploaded_files[0])
 
-    # # Extract text from inputted presentation
-    # text = extract_text_from_pptx(prs)
+    # Extract text from inputted presentation
+    text = extract_text_from_pptx(prs)
 
-    # return (text.split())[0]
-    return "Hello"
+    response = generate_summary(text)
+
+    return response
 
 if __name__ == '__main__':
     app.run(debug=True)
