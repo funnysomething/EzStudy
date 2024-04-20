@@ -18,20 +18,21 @@ def home():
 
 @app.route("/api/upload", methods = ['POST'])
 def upload_file():
-    if 'files' not in request.files:
-        return 'No files uploaded', 400
+    print("Posted file: {}".format(request.files['file']))
+    file = request.files['file']
+
+    # Parse presentation file
+    prs = Presentation(file)
     
-    uploaded_files = request.files.getlist('files')
-
-    # Load the PPTX presentation
-    prs = Presentation(uploaded_files[0])
-
-    # Extract text from inputted presentation
+    # Extract text from presentation
     text = extract_text_from_pptx(prs)
+    print(text)
 
-    response = generate_summary(text)
+    return ""
 
-    return response
+    # response = generate_summary(text)
+
+    # return response
 
 if __name__ == '__main__':
     app.run(debug=True)
