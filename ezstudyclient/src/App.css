@@ -4,12 +4,14 @@
   justify-content: center;
   align-items: center;
   height: 100vh;
-  background-color: black;
   overflow: hidden;
+  background-color: black;
+  scroll-behavior: smooth;
+  color: white;
 }
 
 .background {
-  display: inline-block;
+  display: relative;
 }
 
 .row {
@@ -24,6 +26,18 @@
 
 h1 {
   position: absolute;
-  color: white;
+  justify-content: center;
+}
 
+.text-output-section {
+    background-color: black;
+    position: absolute;
+    top: 100%; /* Position it below the background */
+    left: 0;
+    width: 100%;
+    padding: 20px;
+    box-sizing: border-box;
+    /*max-height: calc(100vh - 40px); /* Adjust based on your preference */
+    overflow-y: auto;
+  
 }

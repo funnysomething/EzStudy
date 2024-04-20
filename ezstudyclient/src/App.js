@@ -6,6 +6,7 @@ function App() {
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
   const [gridSize, setGridSize] = useState({ rows: 0, columns: 0 });
   const [droppedFiles, setDroppedFiles] = useState([]);
+  const [showText, setShowText] = useState(false);
 
   const handleMouseMove = (event) => {
     setMousePosition({ x: event.clientX, y: event.clientY });
@@ -19,8 +20,7 @@ function App() {
 
   const getBackgroundColor = (x, y) => {
     const distance = calculateDistance(x, y);
-    const threshold = 1700;
-    var red = 0; var green = 247; var blue = 191; 
+    const threshold = 2200;
     if (distance < threshold) {
       const opacity = 1 - distance / threshold;
       return `rgba(50, 168, 139, ${opacity})`;
@@ -55,7 +55,13 @@ function App() {
     files.forEach(file => {
       formData.append('file', file);
     });
-  
+    
+    const textOutputSection = document.getElementById('text-output-section');
+    if (textOutputSection) {
+      textOutputSection.scrollIntoView({ behavior: 'smooth' });
+    }
+    /*MOVE THIS LOWER LATER*/
+    setShowText(true);
     try {
       // Send the file to Flask using Axios or fetch API
       await axios.post('http://your-flask-server-endpoint', formData, {
@@ -68,6 +74,8 @@ function App() {
     } catch (error) {
       console.error('Error sending file:', error);
     }
+
+    
   };
   
 
@@ -76,9 +84,9 @@ function App() {
   }; 
 
   return (
-    <div className="App" onMouseMove={handleMouseMove} onDrop={handleDrop} onDragOver={handleDragOver}>
+    <div className="App">
       <h1>Drag and Drop Your File!</h1>
-      <div className="background">
+      <div className="background" onMouseMove={handleMouseMove} onDrop={handleDrop} onDragOver={handleDragOver}>
         {Array.from({ length: gridSize.rows }, (_, rowIndex) => (
           <div key={rowIndex} className="row">
             {Array.from({ length: gridSize.columns }, (_, colIndex) => (
@@ -91,6 +99,24 @@ function App() {
           </div>
         ))}
       </div>
+      {/* Section where text will be outputted */}
+      {showText && (
+        <div className="text-output-section" id="text-output-section">
+          <h2>Text Output</h2>
+          <p>adhfkjdhewfuilhfejwaklfheawulhkfjaewhfuldashfjklaewhulekfhajklhdjklasfhluaekjhdefjk</p>
+          <p>adhfkjdhewfuilhfejwaklfheawulhkfjaewhfuldashfjklaewhulekfhajklhdjklasfhluaekjhdefjk</p>
+          <p>adhfkjdhewfuilhfejwaklfheawulhkfjaewhfuldashfjklaewhulekfhajklhdjklasfhluaekjhdefjk</p>
+
+          <ul>
+            {droppedFiles.map((file, index) => (
+              <li key={index}>
+                <strong>Name:</strong> {file.name}, <strong>Size:</strong> {file.size} bytes,{' '}
+                <strong>Type:</strong> {file.type}
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
     </div>
   );
 }
