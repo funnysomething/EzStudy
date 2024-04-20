@@ -7,6 +7,7 @@ function App() {
   const [gridSize, setGridSize] = useState({ rows: 0, columns: 0 });
   const [droppedFiles, setDroppedFiles] = useState([]);
   const [showText, setShowText] = useState(false);
+  const [text, setText] = useState("")
 
   const handleMouseMove = (event) => {
     setMousePosition({ x: event.clientX, y: event.clientY });
@@ -64,11 +65,11 @@ function App() {
     setShowText(true);
     try {
       // Send the file to Flask using Axios or fetch API
-      await axios.post('http://your-flask-server-endpoint', formData, {
+      await axios.post('http://localhost:5000/api/upload', formData, {
         headers: {
           'Content-Type': 'multipart/form-data'
         }
-      });
+      }).then(res => setText(res.data));
   
       console.log('File sent successfully.');
     } catch (error) {
