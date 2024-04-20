@@ -1,7 +1,6 @@
 from flask import Flask, request
 from flask_cors import CORS
-from pptx import Presentation
-from utils.parse import extract_text_from_pptx 
+from utils.parse import parse_text
 from utils.gptsummarizer import generate_summary
 
 app = Flask(__name__)
@@ -16,16 +15,16 @@ def home():
 
 @app.route("/api/upload", methods = ['POST'])
 async def upload_file():
-    print("Posted file: {}".format(request.files['file']))
     file = request.files['file']
 
-    prs = Presentation(file)
+    text = parse_text(file)
 
-    text = extract_text_from_pptx(prs)
+    if len(text) == 0:
+        return "Invalid file type", 401
 
     response = await generate_summary(text)
 
-    print(response)
+    print("Returning generated response")
 
     return response
 
