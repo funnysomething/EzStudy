@@ -21,7 +21,10 @@
 .cell {
   width: 25px; /* Adjust as needed */
   height: 25px; /* Adjust as needed */
-  /*border: 1px solid white; /* Add border for visibility */
+}
+
+.Main-text {
+  color:black;
 }
 
 h1 {
@@ -39,5 +42,6 @@ h1 {
     box-sizing: border-box;
     /*max-height: calc(100vh - 40px); /* Adjust based on your preference */
     overflow-y: auto;
+    min-height: 100vh;
   
 }

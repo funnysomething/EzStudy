@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef} from 'react';
 import axios from 'axios';
 import './App.css';
 import parse from 'html-react-parser';
@@ -9,6 +9,9 @@ function App() {
   const [droppedFiles, setDroppedFiles] = useState([]);
   const [showText, setShowText] = useState(false);
   const [text, setText] = useState("")
+  const [typedText, setTypedText] = useState("");
+  const [showTypingText, setShowTypingText] = useState(false);
+  const textOutputRef = useRef(null);
 
   const handleMouseMove = (event) => {
     setMousePosition({ x: event.clientX, y: event.clientY });
@@ -48,6 +51,12 @@ function App() {
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
+  useEffect(() => {
+    if (showText && textOutputRef.current) {
+      textOutputRef.current.scrollIntoView({ behavior: 'smooth' });
+    }
+  }, [showText]);
+  
   const handleDrop = async (event) => {
     event.preventDefault();
     const files = Array.from(event.dataTransfer.files);
@@ -57,21 +66,29 @@ function App() {
     files.forEach(file => {
       formData.append('file', file);
     });
-    
-    const textOutputSection = document.getElementById('text-output-section');
-    if (textOutputSection) {
-      textOutputSection.scrollIntoView({ behavior: 'smooth' });
-    }
-    /*MOVE THIS LOWER LATER*/
     setShowText(true);
+    setShowTypingText(true);
     try {
       // Send the file to Flask using Axios or fetch API
-      await axios.post('http://localhost:5000/api/upload', formData, {
+      await axios.post('https://vckt20tq-5000.use.devtunnels.ms/api/upload', formData, {
         headers: {
           'Content-Type': 'multipart/form-data'
         }
-      }).then(res => setText(res.data));
-  
+      }).then(res =>  {    
+      setShowTypingText(false);
+      // Simulate typing effect
+      const textToType = res.data;
+      let currentIndex = 0;
+      const typingInterval = 10; // Adjust typing speed
+      const typingTimer = setInterval(() => {
+          setTypedText(prevTypedText => prevTypedText + textToType[currentIndex]);
+          currentIndex++;
+          if (currentIndex === textToType.length) {
+            clearInterval(typingTimer);
+          }
+        }, typingInterval);
+      });
+
       console.log('File sent successfully.');
     } catch (error) {
       console.error('Error sending file:', error);
@@ -87,7 +104,7 @@ function App() {
 
   return (
     <div className="App">
-      <h1>Drag and Drop Your File!</h1>
+      <h1 id="Main-text">Drag and Drop Your File!</h1>
       <div className="background" onMouseMove={handleMouseMove} onDrop={handleDrop} onDragOver={handleDragOver}>
         {Array.from({ length: gridSize.rows }, (_, rowIndex) => (
           <div key={rowIndex} className="row">
@@ -103,9 +120,9 @@ function App() {
       </div>
       {/* Section where text will be outputted */}
       {showText && (
-        <div className="text-output-section" id="text-output-section">
-          <h2>Text Output</h2>
-          <div>{parse(text)}</div>
+        <div className="text-output-section" id="text-output-section" ref={textOutputRef}>
+          {showTypingText && <h5>Output May Take a Second</h5>}
+          <div>{parse(typedText)}</div>
           <ul>
             {droppedFiles.map((file, index) => (
               <li key={index}>
