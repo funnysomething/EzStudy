@@ -67,7 +67,7 @@ function App() {
     setShowTypingText(true);
     try {
       // Send the file to Flask using Axios or fetch API
-      await axios.post('https://ezsum.study/api/upload', formData, {
+      await axios.post('https://3.19.229.69/api/upload', formData, {
         headers: {
           'Content-Type': 'multipart/form-data'
         }
