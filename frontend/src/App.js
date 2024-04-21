@@ -1,7 +1,9 @@
-import React, { useState, useEffect, useRef} from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
 import './App.css';
 import parse from 'html-react-parser';
+import LoadingIcons from 'react-loading-icons'
+
 
 function App() {
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
@@ -19,7 +21,7 @@ function App() {
     const dx = mousePosition.x - pointX + 400;
     const dy = mousePosition.y - pointY + 450;
     return Math.sqrt(dx * dx + dy * dy);
-  }; 
+  };
 
   const getBackgroundColor = (x, y) => {
     const distance = calculateDistance(x, y);
@@ -46,18 +48,18 @@ function App() {
     handleResize(); // Call it initially
     window.addEventListener('resize', handleResize);
     return () => window.removeEventListener('resize', handleResize);
-  }, []); 
+  }, []);
 
   useEffect(() => {
     if (showText && textOutputRef.current) {
       textOutputRef.current.scrollIntoView({ behavior: 'smooth' });
     }
   }, [showText]);
-  
+
   const handleDrop = async (event) => {
     event.preventDefault();
     const files = Array.from(event.dataTransfer.files);
-    
+
     // Create a FormData object to hold the file
     const formData = new FormData();
     files.forEach(file => {
@@ -71,16 +73,16 @@ function App() {
         headers: {
           'Content-Type': 'multipart/form-data'
         }
-      }).then(res =>  {    
-      setShowTypingText(false);
-      // Simulate typing effect
-      const textToType = res.data;
-      let currentIndex = 4;
-      const typingInterval = 10; // Adjust typing speed
-      const typingTimer = setInterval(() => {
+      }).then(res => {
+        setShowTypingText(false);
+        // Simulate typing effect
+        const textToType = res.data;
+        let currentIndex = 4;
+        const typingInterval = 10; // Adjust typing speed
+        const typingTimer = setInterval(() => {
           setTypedText(prevTypedText => prevTypedText + textToType[currentIndex]);
           currentIndex++;
-          if (currentIndex === textToType.length-9) {
+          if (currentIndex === textToType.length - 9) {
             clearInterval(typingTimer);
           }
         }, typingInterval);
@@ -91,13 +93,13 @@ function App() {
       console.error('Error sending file:', error);
     }
 
-    
+
   };
-  
+
 
   const handleDragOver = (event) => {
     event.preventDefault();
-  }; 
+  };
 
   return (
     <div className="App">
@@ -117,10 +119,12 @@ function App() {
       </div>
       {/* Section where text will be outputted */}
       {showText && (
-        <div className="text-output-section" id="text-output-section" ref={textOutputRef}>
-          {showTypingText && <h5>Output May Take a Second</h5>}
-          <div>{parse(typedText)}</div>
-        
+        <div ref={textOutputRef}>
+          {showTypingText && <h2 id="loading-icon"><LoadingIcons.TailSpin /></h2>}
+          <div className="text-output-section" id="text-output-section" ref={textOutputRef}>
+            <div>{parse(typedText)}</div>
+
+          </div>
         </div>
       )}
     </div>
