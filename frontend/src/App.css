@@ -8,6 +8,7 @@
   background-color: black;
   scroll-behavior: smooth;
   color: white;
+  flex-direction: column;
 }
 
 .background {
@@ -18,13 +19,21 @@
   display: flex;
 }
 
+.loadingIcon {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
 .cell {
-  width: 25px; /* Adjust as needed */
-  height: 25px; /* Adjust as needed */
+  width: 25px;
+  /* Adjust as needed */
+  height: 25px;
+  /* Adjust as needed */
 }
 
 #Main-text {
-  color:black;
+  color: black;
   position: absolute;
 }
 
@@ -34,14 +43,15 @@ h1 {
 
 
 .text-output-section {
-    background-color: black;
-    position: absolute;
-    top: 100%; /* Position it below the background */
-    left: 0;
-    width: 100%;
-    padding: 20px;
-    box-sizing: border-box;
-    /*max-height: calc(100vh - 40px); /* Adjust based on your preference */
-    overflow-y: auto;
-    min-height: 100vh;
+  background-color: black;
+  position: absolute;
+  top: 100%;
+  /* Position it below the background */
+  left: 0;
+  width: 100%;
+  padding: 20px;
+  box-sizing: border-box;
+  /*max-height: calc(100vh - 40px); /* Adjust based on your preference */
+  overflow-y: auto;
+  min-height: 100vh;
 }
