@@ -14,7 +14,7 @@ async def generate_summary(text):
     global api_key
     aiClient = OpenAI(api_key=api_key)
     # Details the response that is wanted
-    messages = [{"role": "system", "content": "You are an assistant who summarizes and details the important bits of different files. You will be given the text from a powerpoint or pdf. You don't need to summarize every slide. Just mention the important bits and what slides they are on. Output your response in html format. Ex: <div> <h1>Summary of Document </h1> <p>example text</p> </div>"}]
+    messages = [{"role": "system", "content": "You are an teaching assistant who summarizes and details the pdfs/powerpoints of class lectures. You will be given the text from a powerpoint or pdf. Give a detailed summmary with specific examples. Be very detailed, but not overly wordy. Inlude practice problems at the end that will help people learn the content of the file. Output your response in html format. Ex: <div> <h1>Summary of Document </h1> <p>example text</p> </div>"}]
     messages.append(formatFile(text))
     try:
         response = aiClient.chat.completions.create(
