@@ -23,7 +23,7 @@ async def summarize():
     response = await generate_summary(text)
     return response
 
-@app.route("api/questions", methods = ['POST'])
+@app.route("/api/questions", methods = ['POST'])
 async def gen_questions():
     file = request.files['file']
     text = parse_text(file)
