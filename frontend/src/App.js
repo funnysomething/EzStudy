@@ -6,9 +6,7 @@ import parse from 'html-react-parser';
 function App() {
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
   const [gridSize, setGridSize] = useState({ rows: 0, columns: 0 });
-  const [droppedFiles, setDroppedFiles] = useState([]);
   const [showText, setShowText] = useState(false);
-  const [text, setText] = useState("")
   const [typedText, setTypedText] = useState("");
   const [showTypingText, setShowTypingText] = useState(false);
   const textOutputRef = useRef(null);
@@ -38,9 +36,8 @@ function App() {
       const screenWidth = window.innerWidth;
       const screenHeight = window.innerHeight;
       const cellSize = 24; // Adjust cell size as needed
-      const margin = 10; // Adjust margin size as needed
-      const availableWidth = screenWidth// - margin * 2; // Consider margins
-      const availableHeight = screenHeight// - margin * 2; // Consider margins
+      const availableWidth = screenWidth
+      const availableHeight = screenHeight
       const maxColumns = Math.floor(availableWidth / cellSize);
       const maxRows = Math.floor(availableHeight / cellSize);
       setGridSize({ rows: maxRows, columns: maxColumns });
@@ -49,7 +46,7 @@ function App() {
     handleResize(); // Call it initially
     window.addEventListener('resize', handleResize);
     return () => window.removeEventListener('resize', handleResize);
-  }, []);
+  }, []); 
 
   useEffect(() => {
     if (showText && textOutputRef.current) {
@@ -104,7 +101,7 @@ function App() {
 
   return (
     <div className="App">
-      <h1 id="Main-text">Drag and Drop Your File!</h1>
+      <h1 id="Main-text">Drag and Drop Your PDF or PowerPoint!</h1>
       <div className="background" onMouseMove={handleMouseMove} onDrop={handleDrop} onDragOver={handleDragOver}>
         {Array.from({ length: gridSize.rows }, (_, rowIndex) => (
           <div key={rowIndex} className="row">
@@ -123,14 +120,7 @@ function App() {
         <div className="text-output-section" id="text-output-section" ref={textOutputRef}>
           {showTypingText && <h5>Output May Take a Second</h5>}
           <div>{parse(typedText)}</div>
-          <ul>
-            {droppedFiles.map((file, index) => (
-              <li key={index}>
-                <strong>Name:</strong> {file.name}, <strong>Size:</strong> {file.size} bytes,{' '}
-                <strong>Type:</strong> {file.type}
-              </li>
-            ))}
-          </ul>
+        
         </div>
       )}
     </div>

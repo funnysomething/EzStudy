@@ -1,2 +1,2 @@
-# BitCamp
-Power Point parser that also uses chat gbt to summerize the Power Point
+# EzStudy
+PowerPoint and PDF parser that uses AI to summarize their content. 
