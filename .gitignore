@@ -1,0 +1,7 @@
+instance
+.venv
+.env
+*.pdf
+media
+public
+node_modules
